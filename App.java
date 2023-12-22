@@ -118,8 +118,7 @@ class Bank {
             choice = sc.nextInt();
             sc.nextLine();
 
-            // Switch statement to handle different menu options
-            switch (choice) {
+            switch (choice) { //issue: cannot handle char/string inputs due to default
                 case 1:
                     // Register account option
                     System.out.print("Enter name: ");
