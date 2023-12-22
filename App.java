@@ -35,24 +35,23 @@ class Customer implements SavingsAccount {
         // If balance is greater than or equal to the limit, apply interest.
         if (balance >= 10000) {
             balance += rate * balance;
-        } else {
+        } else if(balance <= 200){
             // If balance is less than the limit, apply a penalty.
             balance -= (int) (balance / 100.0);
         }
-        
+
         // Record the account update transaction.
         addTransaction(String.format("Account updated. Balance - " + NumberFormat.getCurrencyInstance().format(balance) + " as on " + "%1$tD" + " at " + "%1$tT.", date));
     }
 
     @Override
     public void deposit(double amount, Date date) {
-        // Increasing the account balance by the deposit amount.
+
         balance += amount;
-        // Recording the deposit transaction.
-        addTransaction(String.format(NumberFormat.getCurrencyInstance().format(amount) + " credited to your account. Balance - " + NumberFormat.getCurrencyInstance().format(balance) + " as on " + "%1$tD" + " at " + "%1$tT.", date));
+        addTransaction(String.format(NumberFormat.getCurrencyInstance().format(amount) + " credited to your account. Balance - " + NumberFormat.getCurrencyInstance().format(balance) + " as on " + "%1$tD" + " at " + "%1$tT.", date));         // Recording the deposit transaction.
+
     }
 
-     
     @Override
     public void withdraw(double amount, Date date) {
 
@@ -70,12 +69,11 @@ class Customer implements SavingsAccount {
 
     // Private method to add a transaction message to the transactions list.
     private void addTransaction(String message) {
-        // Add the new transaction message at the beginning of the list.
+
         transactions.add(0, message);
         // If the list size exceeds 5, remove the oldest transaction to maintain a list of the last 5 transactions.
         if (transactions.size() > 5) {
             transactions.remove(5);
-            // Trim the size of the ArrayList to the current number of elements.
             transactions.trimToSize();
         }
     }
@@ -195,9 +193,8 @@ class Bank {
 				sc.nextLine(); //gets rid of leftover newline character
 
             switch(choice) {
-             case 1:// Option for depositing money
+             case 1:            // Deposit
                 System.out.print("Enter amount: ");
-                // Validating that the entered amount is a double
 
         while (!sc.hasNextDouble()) {
             System.out.println("Invalid amount. Enter again: ");
@@ -211,7 +208,6 @@ class Bank {
 
         case 2:
 
-        // Option for transferring money to another account
         System.out.print("Enter payee username: ");
         username = sc.next(); // Reading the payee's username
         sc.nextLine(); // Consuming the leftover newline character
@@ -222,15 +218,15 @@ class Bank {
             System.out.println("Invalid amount. Enter again: ");
             sc.nextLine(); // Clearing the invalid input
         }
+
         amount = sc.nextDouble(); // Reading the transfer amount
         sc.nextLine(); // Consuming the leftover newline character
-        // Checking if the transfer amount exceeds the limit
-        if (amount > 300000) {
+
+        if (amount > 300000) { 
             System.out.println("Transfer limit exceeded. Contact bank manager.");
-            break; // Exiting the case if the limit is exceeded
+            break; 
         }
 
-        // Checking if the payee's username exists in the bank's customer map
         if (bank.customerMap.containsKey(username)) {
             Customer payee = bank.customerMap.get(username); // Retrieving the payee's account
             payee.deposit(amount, new Date()); // Depositing the amount to the payee's account
